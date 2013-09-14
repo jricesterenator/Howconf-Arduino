@@ -1,0 +1,1429 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>Arduino 101</title>
+
+		<meta name="description" content="Introduction to Arduino">
+		<meta name="author" content="Jonathan Rice">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<link rel="stylesheet" href="css/reveal.min.css">
+		<link rel="stylesheet" href="css/theme/default.css" id="theme">
+
+		<!-- For syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- If the query includes 'print-pdf', use the PDF print sheet -->
+		<script>
+			document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+
+        <style type="text/css">
+            .imagecredit {
+                text-align:left;
+                font-size:medium !important;
+                margin-top:90px;
+            }
+
+            .imagecredit p {
+                margin-bottom:0;
+            }
+        </style>
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+
+            
+<!--
+NOTES - Arduino 101
+-Cheap, low-barrier-to-entry microcontroller.
+-Hopefully you all have one or we'll get some of our extras out
+-Hopefully you've had time to get the IDE installed and set up.
+        
+-->
+                <section>
+					<h1>Arduino 101</h1>
+					<p>
+						<small>Jonathan Rice / <a href="http://twitter.com/jricesterenator">@jricesterenator</a></small>
+					</p>
+
+                    <aside class="notes">
+                        -Cheap, low-barrier-to-entry microcontroller.
+                        <br>-Hopefully you all have one or we'll get some of our extras out
+                        <br>-Hopefully you've had time to get the IDE installed and set up.
+                    </aside>
+				</section>
+
+
+<!--
+NOTES - What are we going to do?
+
+(Overview)
+-Later, I'm going to get into something cool you can do with LEDs.
+
+-Realize you can make interesting things w simple inputs. A lot
+of the cool projects out there don't use a lot of fancy hardware, they just use basic hardware
+in a cool way.
+-->
+				<section>
+					<h2>What are we going to do?</h2>
+                    <ul>
+                        <li>Arduino basics</li>
+                        <li>Circuit design</li>
+                        <li>Analog & Digital I/O</li>
+                        <li>Serial I/O</li>
+                    </ul>
+
+                    <aside class="notes">
+                        (Overview)
+                        <br>-Later, I'm going to get into something cool you can do with LEDs.
+
+                        <br>-Realize you can make interesting things w simple inputs. A lot
+                        of the cool projects out there don't use a lot of fancy hardware, they just use basic hardware
+                        in a cool way.
+                    </aside>
+				</section>
+
+<!--
+NOTES - Schedule
+...
+-->
+                <section>
+					<h2>Schedule</h2>
+                    <ol>
+                        <li class="fragment">Arduino</li>
+                        <li class="fragment">Hardware Basics</li>
+                        <li class="fragment">Lab 1 - Hello World!</li>
+                        <li class="fragment">Lab 2 - Multiple LEDs</li>
+                        <li class="fragment">Lab 3 - Digital IO, Buttons, Serial Debugging</li>
+                        <li class="fragment">Lab 4 - Analog IO, Pots</li>
+                        <li class="fragment">Demo 5 - Light Sensors</li>
+                        <li class="fragment">Lab 6 - IR Object Detection</li>
+                        <li class="fragment">Lab 7 - Simon</li>
+                        <li class="fragment">Lab 8 - Simon Says (Serial Input)</li>
+                    </ol>
+				</section>
+
+                <section>
+
+<!--
+NOTES - What is Arduino?
+-Open source platform for rapid hardware prototyping.
+-Different flavors
+-Toolchain with own IDE & C-like language.
+--Can use C++/Arduino libs
+-->
+                    <section>
+                        <h2>What is Arduino?</h2>
+
+                        <img src="images/arduino_uno.jpg" style="height:275px;">
+                        <img src="images/LilyPad_5.jpg" style="height:275px;">
+                        <img src="images/arduino_nano.jpg" style="height: 275px;"/>
+
+                        <div class="imagecredit">
+                            <p>Image Credit: http://www.adafruit.com/products/418?gclid=CLDGirSsybkCFUPl7AodH1IA2Q</p>
+                            <p>Image Credit: http://arduino.cc/en/Main/arduinoBoardLilyPad</p>
+                            <p>Image Credit: http://arduino.cc/en/Main/ArduinoBoardNano</p>
+                        </div>
+
+                        <aside class="notes">
+                            -Open source platform for rapid hardware prototyping.
+                            <br>-Different flavors
+                            <br>-Toolchain with own IDE & C-like language.
+                            <br>--Can use C++/Arduino libs
+                        </aside>
+                    </section>
+
+<!--
+NOTES - Why Arduino?
+
+-Bridge between computer world and real
+-Easy entry for beginners. Don't need to know full toolchains, flashing chips, and needing a programmer
+-Rapid prototyping - no inital setup
+-Quick flashing vs more steps for traditional - USB, BT, Wifi w shields
+
+(next)
+(Shields) Standard pin layout = 3rd parties can design boards that snap onto the Arduino. This can enable BT,
+ethernet, wifi, GSM...
+-->
+                    <section>
+                        <h2>Why Arduino?</h2>
+
+                        <div class="fragment">
+
+                            <p>Shields</p>
+                            <p style="font-size:x-large">Ethernet, Bluetooth, Wifi, GSM, motors...</p>
+                            <img src="images/ethernet_shield.jpg" style="height:300px;"/>
+                            <img src="images/bluetooth_shield.jpg" style="height:300px;"/>
+                            <img src="images/gsm_shield.jpg" style="height:200px;"/>
+
+                            <div class="imagecredit">
+                                <p>Image Credit: http://www.adafruit.com/products/201?gclid=CNnE1aGrybkCFSZp7Aod3BoAYA</p>
+                                <p>Image Credit: http://www.amazon.com/Bluetooth-Shield-for-Arduino/dp/B007BYI172</p>
+                                <p>Image Credit: http://arduino.cc/en/Main/ArduinoGSMShield</p>
+                            </div>
+                        </div>
+
+                        <aside class="notes">
+                            -Bridge between computer world and real
+                            <br>-Easy entry for beginners. Don't need to know full toolchains, flashing chips, and needing a programmer
+                            <br>-Rapid prototyping - no inital setup
+                            <br>-Quick flashing vs more steps for traditional - USB, BT, Wifi w shields
+                            <br>(next)
+                            (Shields) Standard pin layout = 3rd parties can design boards that snap onto the Arduino. This can enable BT,
+                                ethernet, wifi, GSM...
+                        </aside>
+                    </section>
+
+<!--
+NOTES - Why not Arduino?
+
+-For RAPID PROTOTYPING. While seems cheap, it's actually a really
+expensive microcontroller.
+-Flashed code is bulky (due to imports) and requires a chip with a lot more memory 
+than you'd normally need for doing the same things.
+
+An Arduino will run you about $25, but you can buy plain AVR chips for about $1. And an
+AVR programmer isn't much more than $10-15.
+
+So for mass production or keeping your creation around as a final product without having
+to sacrifice an arduino board, you might considering burning your own chips.
+-->
+                    <section>
+                        <h2>Why not Arduino?</h2>
+
+                        <aside class="notes">
+                            <br>-For RAPID PROTOTYPING. While seems cheap, it's actually a really
+                            expensive microcontroller.
+                            <br>-Flashed code is bulky (due to imports) and requires a chip with a lot more memory than you'd normally need for doing the
+                            same things.
+
+                            <br><br>An Arduino will run you about $25, but you can buy plain AVR chips for about $1. And an
+                            AVR programmer isn't much more than $10-15.
+
+                            <br><br>So for mass production or keeping your creation around as a final product without having
+                            to sacrifice an arduino board, you might considering burning your own chips.
+                        </aside>
+                    </section>
+
+<!--
+NOTES - Today's Project
+
+Today's project is going to build from basic LED blinking and (time allowing) it'll become a
+Simon/Bop It-like game. If we don't get to the end in time, you should still be able to use
+the schematics and lab answers I provide to make the game on your own time.
+
+(demo final game)
+-->
+                    <section>
+                        <h2>Today's Project</h2>
+
+                        <aside class="notes">
+                         Today's project is going to build from basic LED blinking and (time allowing) it'll become a
+                         Simon/Bop It-like game. If we don't get to the end in time, you should still be able to use
+                         the schematics and lab answers I provide to make the game on your own time.
+                         <br>
+                         <br>(demo final game)
+                        </aside>
+                    </section>
+
+<!--
+NOTES - Program flow
+
+-Here's an example of an basic program. It'll indicate the current button state on the LED.
+-#defines; setup() for pin mode, serial, etc; loop();
+-When you compile it puts this in an outer program
+(next slide)
+-->
+                    <section>
+                        <h2>Program Flow</h2>
+                        <pre><code class="java" data-trim>
+#define LED 3
+#define BUTTON 4
+
+void setup() {
+    pinMode(LED_PIN, OUTPUT);
+    pinMode(BUTTON, INPUT);
+}
+
+void loop() {
+    int val = digitalRead(BUTTON);
+    digitalWrite(LED_PIN, val);
+
+    delay(100):
+}
+                        </code></pre>
+
+                        <aside class="notes">
+                            -Here's an example of an basic program. It'll indicate the current button state on the LED.
+                            <br>-#defines; setup() for pin mode, serial, etc; loop();
+                            <br>-When you compile it puts this in an outer program
+                            (next slide)
+                        </aside>
+                    </section>
+
+<!--
+NOTES
+
+This is what the outer program looks like.
+-->
+                    <section>
+                        <pre><code class="java" data-trim>
+//Your #defines...
+
+void setup();
+void loop();
+
+int main() {
+    setup();
+
+    while(1) {
+        loop();
+    }
+}
+
+void setup() {   /* Your setup code... */  }
+
+void loop() {  /* Your loop code... */ }
+                        </code></pre>
+
+
+                        <aside class="notes">
+                            What the outer program looks like.
+                        </aside>
+
+                    </section>
+				</section>
+
+                <section>
+
+                    <section>
+                        <h2>Hardware Basics</h2>
+                    </section>
+
+
+<!--
+NOTES - parts we'll be using today
+-->
+                    <section>
+                        <p>Parts we'll be using today</p>
+                        <div>
+
+                            <img src="images/leds.jpg" style="height:240px;"/>
+                            <img src="images/tactile_switch.jpg" style="height:240px;"/>
+                            <img src="images/pecl_pot_kus28_p.jpg" style="height:240px;"/>
+                            <img src="images/resistors.jpg" style="width:500px;"/>
+                            <div class="imagecredit">
+                                <p>Image Credit: http://www.flashlightblog.com/quick-guide-to-led-flashlights/</p>
+                                <p>Image Credit: http://www.galco.com/buy/Precision-Electronic-Components/ku5011s28</p>
+                                <p>Image Credit: http://simplestick.blogspot.com/2012/08/simple-stick-overview.html</p>
+                                <p>Image Credit: http://ecee.colorado.edu/~mathys/ecen1400/labs/resistors.html</p>
+                            </div>
+                        </div>
+
+                        <aside class="notes">
+                            -These parts
+                        </aside>
+                    </section>
+
+<!--
+NOTES:
+
+-Breadboard electrical flow
+-->
+                    <section>
+                        <img src="images/breadboard.jpg"/>
+                        <div class="imagecredit">
+                            http://www.markallen.com/teaching/ucsd/147a/lectures/DC%20Basics/images/Breadboard.jpg
+                        </div>
+
+                        <aside class="notes">
+                            -Describe breadboard electrical flow
+                        </aside>
+                    </section>
+
+
+<!--
+NOTES - Resistor color codes
+
+Resistors slow electron flow and effectively decrease voltage.
+..They're also good for keeping things from starting on fire.
+
+Skim over this. Do examples using today's resistors, but just say to refer
+to this when you have questions.
+-->
+                    <section>
+                        <h2>Resistor Color Codes</h2>
+
+                        <img src="images/resistor-color-chart.jpg" style="height:450px;"/>
+
+                        <ul style="font-size: x-large; list-style: none; vertical-align:top; background-color:#d3d3d3; color:black; padding:10px; margin-top:15px;">
+                            <li>220 ohm - <span style="color:red;">Red, </span><span style="color:red;">Red, </span><span style="color:#8b4513;">Brown</span></li>
+                            <li>470 ohm - <span style="color:yellow;">Yellow, </span><span style="color:purple;">Purple, </span><span style="color:#8b4513;">Brown</span></li>
+                            <li>10K ohm - <span style="color:#8b4513;">Brown, </span><span style="color:black;">Black, </span><span style="color:orange;">Orange</span></li>
+                        </ul>
+
+                        <div class="imagecredit">
+                            <p>http://www.digikey.com/web%20export/mkt/general/mkt/resistor-color-chart.jpg</p>
+                        </div>
+
+                        <aside class="notes">
+                            Resistors slow electron flow and effectively decrease voltage. They're also good for keeping things from starting on fire.
+
+                            Kinda skim over this. Do examples using today's resistors, but just say to refer
+                            to this when you have questions.
+                        </aside>
+                    </section>
+
+                    <section>
+                        <h2>Reading a Schematic</h2>
+
+                        <img src="images/lab2schematic.png"/>
+
+
+                        <div style="display:block;">
+                            <div style="display:inline-block; padding:15px;">
+                                <div>LED</div>
+                                <img src="images/symbol_led.png"/>
+                            </div>
+                            <div style="display:inline-block; padding:15px;">
+                            <div>Resistor</div>
+                                <img src="images/symbol_resistor.png"/>
+                            </div>
+                            <div style="display:inline-block; padding:15px;">
+                                <div>Button</div>
+                                <img src="images/symbol_button.png"/>
+                            </div>
+                            <div style="display:inline-block; padding:15px;">
+                                <div>Pot</div>
+                                <img src="images/symbol_pot.png"/>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section>
+                        <h2>Let's begin...</h2>
+                    </section>
+                </section>
+
+                <!-- Lab 1 - Hello World -->
+                <section>
+                    <section>
+                        <h1>Lab 1</h1>
+                        <h2>Hello, World!</h2>
+                        <p>
+                            <ol>
+                                <li>Toolchain / Workflow</li>
+                                <li>Digital Output</li>
+                                <li>Current limiting resistors</li>
+                            </ol>
+                        </p>
+                    </section>
+
+<!--
+NOTES
+Everyone have the IDE installed? If not, you can do it during Lab 1. We'll work
+through all the toolchain issues then.
+
+-->
+                    <section>
+                        <h2>Everyone have Arduino IDE installed?</h2>
+
+                        <aside class="notes">
+                            Everyone have the IDE installed? If not, you can do it during Lab 1. We'll work
+                            through all the toolchain issues then.
+                        </aside>
+                    </section>
+
+<!--
+NOTES - Digital Output
+-0s/1s. High/LOW. Voltage/No voltage.
+-Arduino has lots of pins for digital IO
+-To activate something like an LED, need to active the pin it's on (give it a + voltage)
+-Another way of saying this is that we want the pin to go HIGH.
+HIGH == max voltage (5v, 3.3v). Low is no voltage (ground).
+
+-(next) (explain code)
+
+-->
+                    <section>
+                        <h2>Digital Output</h2>
+
+                        <div class="fragment">
+                            <pre><code class="java" data-trim>
+
+#define LED_1 2  //Define pin
+
+void setup() {
+  pinMode(LED_1, OUTPUT); //Set Pin 2 as digital OUTPUT
+}
+
+void loop() {
+  digitalWrite(LED_1, HIGH); //Turn LED on
+  delay(1000); //Pause for 1 second
+
+  digitalWrite(LED_1, LOW); //Turn LED off
+  delay(1000;
+}
+                            </code></pre>
+                        </div>
+
+                        <aside class="notes">
+                            -0s/1s. High/LOW. Voltage/No voltage.
+                            <br>-Arduino has lots of pins for digital IO
+                            <br>-To activate something like an LED, need to active the pin it's on (give it a + voltage)
+                            <br>-Another way of saying this is that we want the pin to go HIGH. HIGH == max voltage (5v, 3.3v). Low is no voltage (ground).
+                            <br>-(next) (explain code)
+                        </aside>
+                    </section>
+
+<!--
+NOTES - Lab 1
+
+-Going to blink LED. (desc schematic)
+-Pin 13 blink vs this (current limiting resistor)
+-Current limiting resistors
+-Use small resistor for max light. Calculators online or V=IR
+-LED polarity
+(Live lab, follow along)
+
+-->
+                    <section>
+                        <h2>Lab 1 Schematic</h2>
+                        <img src="images/lab1schematic.png"/>
+
+                        <aside class="notes">
+                            -Going to blink LED. (desc schematic)
+                            <br>-Pin 13 blink vs this (current limiting resistor)
+                            <br>-Current limiting resistors
+                            <br>-Use small resistor for max light. Calculators online or V=IR
+                            <br>-LED polarity
+                            <br>(Live lab, follow along)
+                        </aside>
+                    </section>
+
+                </section>
+
+                <section>
+
+                    <section>
+                        <h1>Lab 2</h1>
+                        <h2>Multiple LEDs</h2>
+
+                        <ol>
+                            <li>Reinforce LEDs & Digital Output</li>
+                            <li>Functions</li>
+                        </ol>
+                    </section>
+
+                    
+<!--
+NOTES - Functions
+-Just like C/C++ functions
+-Wrap common code in functions. DRY principle.
+-Microcontroller code can be hackish
+
+(next)
+-Make flashLED() fx. Then wrap in cycleLEDs()
+-Describe result
+-->
+                    <section>
+                        <h2>Functions</h2>
+                                <pre><code class="java" data-trim>
+
+void loop() {
+    if( thisIsAFunction() ) {
+        //Huzzah.
+    }
+}
+
+boolean thisIsAFunction(int val) {
+  return true;
+}
+                                </code></pre>
+
+
+                        <div class="fragment">
+                            <pre><code class="java" data-trim>
+//Blink the given LED like Lab 1. Pass in the LED pin# and delay time.
+void flashLED(int ledPin, int delayTime) { ... }
+
+//Call this from loop() and blink each LED.
+void cycleLEDs() {
+    //Blink LED 1
+    //Blink LED 2
+    //Blink LED 3
+}
+                            </code></pre>
+                        </div>
+
+                        <aside class="notes">
+                            <br>-Just like C/C++ functions
+                            <br>-Wrap common code in functions. DRY principle.
+                            <br>-Microcontroller code can be hackish
+                            <br>(next)
+                            <br>-Make flashLED() fx. Then wrap in cycleLEDs()
+                            <br>-Describe result
+
+                        </aside>
+                    </section>
+
+                    <section>
+                        <h2>Lab 2 Schematic</h2>
+
+                        <img src="images/lab2schematic.png"/>
+                    </section>
+
+                </section>
+
+
+                <!-- Lab 3 -->
+                <section>
+
+                    <section>
+                        <h1>Lab 3</h1>
+                        <h2>Digital Input, Buttons,
+                            <br>Serial Debugging</h2>
+                        <ol>
+                            <li>Digital Input</li>
+                            <li>Buttons</li>
+                            <li>Pull-up / Pull-down Resistors</li>
+                            <li>Serial Debugging</li>
+                        </ol>
+                    </section>
+
+                    <!--
+                    NOTES
+                        -Did digital out, writing HIGH/LOW. Now going to read.
+                        -Used digitalWrite() before, what this time?
+                        -For digital, you set the pinMode() to INPUT, and read with digitalRead()
+                    
+                    -->
+                    <section>
+                        <h2>Digital Input</h2>
+
+                        <div class="fragment">
+                            <pre><code class="java" data-trim>
+pinMode(&lt;pin&gt;, INPUT);
+digitalRead(&lt;pin&gt;, &lt;LOW|HIGH&gt;);
+                            </code></pre>
+                        </div>
+                        
+                        <aside class="notes">
+                            -Did digital out, writing HIGH/LOW. Now going to read.
+                            -Used digitalWrite() before, what this time?
+                            -For digital, you set the pinMode() to INPUT, and read with digitalRead()
+                        </aside>
+
+                    </section>
+
+                    <!--
+                        You all know buttons, right? Click..click. These are generally mechanical switches with
+                        metal contacts that connect when you press.
+
+                         (Talk about how to read input off these buttons)
+
+                         We want to read the level when the switch is depressed. So you just hook the button up to
+                         the Arduino input pin and you're golden, right?
+
+                         What if you do that? ... BOOM.
+
+                         What does a switch do? It connects the 2 pins. So, in this case, you're connecting
+                         +5v to GND. It's going to GND through the switch and through the Arduino. You've created
+                         shorts. A pair of shorts. You'll get a huge current draw coming through your USB port and
+                         maybe something will start on fire.
+
+                         What to do?
+
+                         Add a resistor. A current limiting resistor like in Labs 1 & 2.
+                         <next>
+                    -->
+                    <section>
+                        <h2>Buttons</h2>
+
+                        <img src="images/tactile_switch.jpg"/>
+
+                        <div class="imagecredit">
+                            <p>Image Credit: http://www.galco.com/buy/Precision-Electronic-Components/ku5011s28</p>
+                        </div>
+                        
+                        <aside class="notes">
+                            -Describe buttons
+                            -Talk about how to read input off the buttons in the lab
+                        </aside>
+                    </section>
+
+                    <!-- NOTES:
+
+                         For button input, the resistor serves another purpose. How you wire it in has an effect on
+                         the value you read. This is because it's acting as either a Pull-up or pull-down resistor.
+                         (describe PU/PD)
+
+                         All a button really does is state change. DOWN doesn't always mean on, and UP doesn't always
+                         mean off. You know the name for buttons that are normally off, but go on when you press them?
+                         Or that are normally on, but go off when you press?
+                         ...Normally open (NO) / Normally closed (NC)
+
+                         Pull-up/pull-down resistors let us create one or the other.
+
+                       -->
+                    <section>
+                        <h2>Pull-up / Pull-down Resistors</h2>
+
+                        <p>Pull-Up / Pull-Down</p>
+                        <img src="images/pullup_switch.png" style="height:100px;"/>
+                        <img src="images/pulldown_switch.png" style="height:100px;"/>
+
+                        <p>&nbsp;</p>
+                        <p>Normally Open (NO) / Normally Closed (NC)</p>
+                        <img src="images/no_button.png" style="height:120px;"/>
+                        <img src="images/nc_button.png" style="height:120px;"/>
+                    </section>
+
+
+                    <!-- NOTES:
+
+                    Yeah, this isn't anything more than sysouts. Just view it in the IDE's serial console.
+
+                    There are really 2 parts to writing serial: Serial.begin(<baud rate>) and
+                    Serial.print(ln) to write the data.
+
+                    So, what do you expect the output to be?
+                    <next>
+
+                    Demo time.
+                    <demo the serial console>
+                       -->
+                    <section>
+                        <h2>Serial Debugging</h2>
+
+                        <pre><code class="java" data-trim>
+                            void setup() {
+                            //Enable serial. 9600 baud rate.
+                            Serial.begin(9600);
+                            }
+
+                            void loop() {
+                            Serial.print("This will print");
+                            Serial.print(" on the same line.");
+
+                            Serial.println("There's a newline after this.");
+                            Serial.println("So this is on a new line.");
+                            }
+                        </code></pre>
+
+                        <pre class="fragment">
+This will print on the same line.<span class="fragment">There's a newline after this.
+So this is on a new line.</span>
+                        </pre>
+                    </section>
+
+
+                    <!-- NOTES
+                     Here's the lab 3 schematic. Wire up the button (using the current limiting/PU-PD resistor)
+                     and output the value to your serial console. Play with moving the PU-PD resistor between
+                     +5v/Button & GND/Button. See the different values in your serial console.
+
+                     <lab>
+                    -->
+                    <section>
+                        <h2>Lab 3 Schematic</h2>
+                        <img src="images/lab3schematic.png"/>
+                        <ol>
+                            <li>Read button and output to serial</li>
+                            <li>Experiment with pull-up / pull-down</li>
+                        </ol>
+                    </section>
+
+                    <!-- NOTES
+                    Let's move on to click detection. Detecting "click". What is a click?
+
+                    A click is a state change. A state change where we end on an UP.
+                    <Point out on button logic pic which part is a click>
+
+                    So how do you detect this? Store the previous value and compare it to the current. Make sure
+                    to store the previous value as a variable OUTSIDE the loop(), otherwise it'll overwrite.
+                    Give it a try and output "Button clicked" over serial.
+                    <lab>
+
+                    When you have that working, notice anything strange? It might be registering extra clicks.
+                    <next>
+                    -->
+                    <section>
+                        <h2>Click Detection</h2>
+
+                        <div>
+                            <p>What is a "click"?</p>
+                            <img src="images/scope_button.JPG" style="height:400px;"/>
+                        </div>
+
+                        <p class="fragment">Go ahead, add click detection and output "Button clicked".</p>
+                        <p class="fragment">...Notice anything strange?</p>
+
+                    </section>
+
+                    <!-- NOTES
+                        Buttons are mechanical devices and they work by 2 contacts coming together. Real world
+                        things aren't perfect. There are variances in the pads and they can bounce against each other
+                        when you press. This causes misreads and phantom button clicks.
+
+                        There are hardware solutions with resistors and capacitors, but an easy software solution is
+                        to delay reading the input to give the button time to settle down.
+                        -delay() We'll use delay() at the end of the loop() and that'll be good enough.
+                        -sampling delay - You can also store the time when you first read the button and only read
+                         again after some amount of time has passed.
+
+                         Edit your sketch and add a 100ms delay to the end. Are the phantom clicks gone?
+                         <lab>
+                    -->
+                    <section>
+                        <h2>Debouncing</h2>
+
+                        <ul>
+                            <li>delay()</li>
+                            <li>Sampling delay</li>
+                        </ul>
+
+                        <p></p>
+                        <p class="fragment">Go, add 100 ms delay.</p>
+                    </section>
+
+                </section>
+
+
+                <section>
+
+                    <section>
+                        <h1>Lab 4</h1>
+                        <h2>Analog IO, Potentiometers</h2>
+                    </section>
+
+                    <!-- NOTES
+                    Potentiometers are just turn-y knobs. The basic ones generally have 3 leads, and they come in
+                    linear or logarithmic. Logarithmic are generally used for things like hardware volume control.
+
+                    The outer leads are usually +5V and GND, and the wiper in the middle is for the changing value.
+
+                    (Talk about voltage divider vs variable resistor)
+                    -Voltage Divider - All 3 pins are used and the wiper outputs a voltage proportional to the wiper
+                    position.
+                    -Variable Resistor - Only need 2 pins. It's just like sticking different resistors in the circuit.
+                    For our use, it's not really going to make much difference.
+
+                    -->
+                    <section>
+                        <h2>Potentiometers (Pots)</h2>
+
+                        <img src="images/pecl_pot_kus28_p.jpg" style="width:400px;" />
+                        <img src="images/symbol_pot.png" style="width:400px;" />
+
+                        <div class="imagecredit">
+                            Image Credit: http://www.galco.com/buy/Precision-Electronic-Components/ku5011s28
+                        </div>
+                    </section>
+
+                    <section>
+                        <p>Logarithmic vs Linear</p>
+
+                        <img src="images/scope_logpot.JPG" style="height:310px;"/>
+                        <img src="images/scope_linearpot.JPG" style="height:310px;"/>
+                    </section>
+                    <!-- NOTES
+
+                    At its core, digital IO is easy: set the pinMode() and use digitalRead(). What about Analog IO?
+                    <next>
+
+                    Here are common functions for analog IO.
+                    ANALOG IN
+                    To read analog, you've got to plug into one of the analog input pins on the other side of the board.
+                    -You don't need to set the pinMode for analog IN
+                    -Read using analogRead()
+
+                    ANALOG OUT
+                    To output analog,
+                    -You use the digital pins and set the pinMode() to OUTPUT, just like digital.
+                    --Except, you must plug into a PWM port (Pulse-width modulation). PWM ports can output the
+                    range of analog values. The other ones only output 0/1 digital. If you write a range of values
+                    to a non-PWM pin, it'll just scale that to 0/1.
+                    -Output using analogWrite()
+
+                    One consideration is that analog input returns a value 0-1023. However, output is 0-255.
+                    If you want to do something like set the LED brightness to match the pot twist, you'll need to
+                    adjust these values to be on the same scale. Arduino provides a convenience method for this called
+                    map(). It converts a value from one scale to another.
+
+                    -->
+                    <section>
+                        <h2>Analog IO</h2>
+
+                        <div class="fragment">
+                            <pre><code class="java" data-trim>
+
+/* Analog INPUT */
+//pinMode(); //Not necessary for Analog pins
+analogRead(&lt;pin&gt;); //Returns a value from 0-1023.
+
+/* Analog OUTPUT */
+pinMode(&lt;pin&gt;, OUTPUT); //Any PWM pin
+analogWrite(&lt;pin&gt;, value); //0-255
+
+int scaledVal = map(int value, int fromLow, int fromHigh, int toLow, int toHigh);
+                            </code ></pre>
+                        </div>
+
+                    </section>
+
+                    <!-- NOTES
+                    Here's the lab 4 schematic. Read the pot input and write the value out to serial. When you're
+                    comfortable with that, use map() and write the value to the LED.
+
+                    <lab>
+
+                    -->
+
+                    <section>
+                        <h2>Lab 4 Schematic</h2>
+                            <img src="images/lab4schematic.png" />
+                            <ol>
+                                <li>Read pot input and write to serial</li>
+                                <li>Write to LED</li>
+                            </ol></p>
+                    </section>
+
+
+                </section>
+
+
+                <section>
+                    <!-- NOTES
+                     This will a short demo about detecting light. We'll build on this
+                    concept for something we'll add to the project later.
+                    -->
+                    <section>
+                        <h1>Demo 5</h1>
+                        <h2>Light Sensors</h2>
+                    </section>
+
+                    <!-- NOTES
+
+                    This is a photoresistor. It's like a variable resistor that changes its resistance proportionally
+                    to the amount of light hitting its surface.
+
+                    You wire it up just like a button. The pins go to +5v/GND, there's a pull-up/pull-down resistor,
+                    and you connect the arduino the same.
+
+                    Here's what it looks like on the oscilloscope.
+                    JRTODO: params ____________________
+                    <demo on oscilloscope>
+
+                    -->
+                    <section>
+                        <h2>Demo 5.1 - Photoresistor</h2>
+
+                        <div>
+
+                            <!--
+                               Photocell image from http://extra-parts.com/index.php?main_page=popup_image&pID=147
+                            -->
+                            <img src="images/photocell.jpg" style="height:300px;"/>
+                            <img src="images/demo5_1schematic.png" style="height:300px;"/>
+                        </div>
+
+                        <div class="imagecredit">
+                            Photocell image from http://extra-parts.com/index.php?main_page=popup_image&pID=147
+
+                        </div>
+
+
+                    </section>
+
+                    <!-- NOTES
+
+                    That's cool, but how about this? You can use an LED as a light sensor, too.
+                    (Talk about why)
+
+                    Interestingly, the LED color plays an important role in the light detection. For example,
+                    RED seems to accept the most light. Visible and IR. Yellow and Green are more strict about
+                    the light they let it.
+
+                    Here's the LED-as-light-sensor output on the oscilloscope.
+                    JRTODO: params _______________________
+                    <demo on oscilloscope>
+
+                    Note that the values are as dramatic as with the photoresistor. That's ok,
+                    but it just means there might be more noise to sift through when doing detection.
+
+                    -->
+
+                    <section>
+                        <h2>Demo 5.2 - LED as Light Sensor</h2>
+
+                        <div class="fragment">
+                            <img src="images/demo5_2schematic.png" style="width:400px;" />
+                        </div>
+                    </section>
+                </section>
+
+                <section>
+
+                    <!-- NOTES
+
+                    Now, we're going to use the LED-as-light-sensor concept and extend it to IR. A red LED catches
+                    most light wavelengths, including IR, but it's sensitive to ambient light. By using an IR LED, we
+                    can significantly limit the detection to the IR wavelengths. By emitting an IR signal from one
+                    position, we can measure the amount of reflected light to detect an object's presence.
+
+                    -->
+                    <section>
+                        <h1>Lab 6</h1>
+                        <h2>IR Object Detection</h2>
+                        <ol>
+                            <li>IR Light Sensor</li>
+                            <li>Analog Input Multiplexing</li>
+                        </ol>
+                    </section>
+
+                    <!-- NOTES
+
+                    IR is a light wavelength longer than visible light. TV remotes, WiiMotes, etc
+                    use it. For those who don't know, you can see IR with your phone camera. It can help to make
+                    sure the emitter is actually emitting.
+
+                    <demo - Beam IR into laptop camera>
+
+                    -->
+                    <section>
+                        <h2>IR</h2>
+                    </section>
+
+                    <!-- NOTES
+                    Let's do the emitter first.
+
+                    <lab 6.1>
+                    -->
+                    <section>
+                        <h2>Lab 6.1 - IR Emitter</h2>
+
+                        <img src="images/lab6_1schematic.png"/>
+                    </section>
+
+                    <!-- NOTES
+                    For the receiver, we're going to wire it up just like I did for the Red LED.
+
+                    NOTE: While it primarily senses the light from straight on, the 'sensor' is very susceptible
+                    to light from the sides. Because of this and for detection to work correctly, we need to
+                    by block out the light from the sides (using heatshrink as a form and electrical tape to
+                    block the light)
+
+                    Go ahead, and wire up the receiver LEDs and output the value you read to serial.
+                    Note: Make sure the angles are good for reflection. When you wave your hand over, the light value
+                    should increase, then drop when you move your hand away.
+                    <lab  6.2>
+                    -->
+                    <section>
+                        <h2>Lab 6.2 - IR Receiver</h2>
+
+                        <img src="images/lab6_2schematic.png"/>
+                    </section>
+
+                    <!-- NOTES
+                    <After everyone's well on their way, have them twist the pot>
+                    When the pot changes, the light level outputted to serial should change. They're not connected,
+                    why's this happening?
+
+                    <next>
+                    This is because of the analog input MUX'ing the chip does. It can't read all the
+                    analog ports simultaneously, so it's quickly switching between the 2 inputs and there's some
+                    bleedover in the read value.
+
+                    <next>
+                    One way to get around this, is to do like the code below.
+                    <explain code>
+
+                    <next>
+                    Now, fix your light reading code to be like this, and check the light value again. It shouldn't
+                    change at all (as much) with the pot. Also, now you can activate the 3rd LED when the light value
+                    is over a certain amount.
+
+                    -->
+                    <section>
+                        Now twist the pot...what happens to the light level?
+
+                        <div class="fragment">
+                            Analog Input MUX'ing
+
+                            <div class="fragment">
+                                <pre><code class="java" data-trim>
+int readLightLevel() {
+    analogRead(LIGHT); //Switch to LIGHT input pin
+    delay(50); //Give it time to settle
+    int lightVal = analogRead(LIGHT); //This is a good read
+
+    return lightVal;
+}
+                                </code></pre>
+
+                                <div class="fragment">
+                                    <p>Lab 6.3</p>
+                                    <ol>
+                                        <li>Account for Analog MUX'ing</li>
+                                        <li>Trigger LED from light levels</li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                </section>
+
+
+                <section>
+
+                    <!-- NOTES
+                    Now we're going to take all these simple IOs and see something more complex you can do with it.
+                    You've already done the hard work of wiring everything up and reading/writing pins. With a little
+                    game logic, what we've got here will become a Simon/Bop It-like game.
+
+                    Since I assume you're all programmers and this is a class on hardware, I'm going to provide the
+                    game logic.
+
+                    <next>
+                    First, there are a couple new things to cover: random number generation, importing 3rd party libraries,
+                    and if you have them, buzzers and making noise.
+                    -->
+                    <section>
+                        <h1>Lab 7</h1>
+                        <h2>Simon</h2>
+                        <ol class="fragment">
+                            <li>Random()</li>
+                            <li>Importing Libraries</li>
+                        </ol>
+                    </section>
+
+                    <!-- NOTES
+                    Generating random numbers in an Arduino sketch is easy...they provide a built in function
+                    that does it for you: random().
+
+                    If you want a different random number between restarts (who wouldn't?) you can seed the RNG
+                    in setup() using random noise on an unused analog input.
+                    -->
+                    <section>
+                        <h2>Random()</h2>
+                        <pre><code class="java" data-trim>
+int random(&lt;lowVal&gt;, &lt;highVal&gt;); //highVal is non-inclusive
+                        </code></pre>
+                        <div style="height:10px;"></div>
+                        <pre><code class="java" data-trim>
+
+#define UNUSED_ANALOG_PIN
+
+void setup() {
+
+    //Seed RNG with noise from an unused analog input
+    randomSeed(analogRead(UNUSED_ANALOG_PIN));
+
+}
+
+void loop() {
+    /* http://arduino.cc/en/Reference/random */
+    //Generate a random number: 0,1,2
+    int rand = random(0, 3);
+
+    //...
+}
+                        </code></pre>
+
+
+                    </section>
+
+                    <!-- NOTES:
+                    Importing external libraries is done just like in C with #include. There are a lot of libraries
+                    to import.
+                    -->
+                    <section>
+                        <h2>Importing Libraries</h2>
+<pre><code class="java" data-trim>
+#include &lt;pitches.h&gt;
+</code></pre>
+                    </section>
+
+                    <!-- NOTES
+                    Please load the lab 7 sketch with has most of the logic and we'll get started.
+                    (If there's no time, just load the lab 7 answer)
+
+                    It's already got the code we did from the other labs, plus the game logic. The input stuff
+                    is exactly what you've already done.
+
+                    (Talk about finding/tweaking the light activation value like in the last lab)
+                     <lab 7>
+
+                    -->
+                    <section>
+                        <h2>Lab 7 - Simon</h2>
+                    </section>
+                </section>
+
+                <section>
+
+                    <!-- NOTES
+                    We've worked a lot with outputting to Serial, but we can also read values in from serial.
+                    You can use this to do heavy lifting logic PC-side and send the results to the
+                    arduino. You can also use this to connect to the internet (by making the PC to the work and
+                    sending crunched data to the Arduino).
+                    -->
+                    <section>
+                        <h1>Lab 8</h1>
+                        <h2>Serial Input</h2>
+                    </section>
+
+                    <!-- NOTES
+
+                    Here are the necessities of serial input. (Describes code)
+
+                    <next>
+                    Here's a basic flow to read messages from serial and echo them back.
+
+                    -->
+                    <section>
+                        <h2>Serial Input</h2>
+<pre><code class="java" data-trim>
+boolean Serial.available(); //Is data available?
+
+int charCode = Serial.read(); //Read one byte as int
+char c = Serial.read(); //Read one byte as char
+</code></pre>
+                        <div style="height:10px;"></div>
+                        <div class="fragment">
+                            <p>Example 1</p>
+<pre><code class="java" data-trim>
+String msg = "";
+while(Serial.available()) {
+
+    char c = Serial.read();
+    msg += c;
+
+}
+Serial.print("You entered: ");
+Serial.println(msg);
+</code></pre>
+                        </div>
+                    </section>
+
+                    <!-- NOTES
+                    Here's another program example where newlines end a message.
+
+                    <demo this>
+
+                    -->
+                    <section>
+                        <p>Example 2</p>
+<pre><code class="java" data-trim>
+String msg = "";
+while(Serial.available()) {
+
+    char c = Serial.read();
+
+    if(c == '\r')  //Ignore CR
+        continue;
+    if(c == '\n')  //Message ends with newline
+        break;
+
+    msg += c;
+
+}
+Serial.print("You entered: ");
+Serial.println(msg);
+</code></pre>
+                    </section>
+
+                    <!-- NOTES:
+                    If low on time, skip this. I already demo'd it.
+
+                    Else, they create a new project and try it out using the example code above.
+                    <lab>
+                    -->
+                    <section>
+                        <h2>Lab 8.1</h2>
+                        <ol>
+                            <li>Create new project</li>
+                            <li>Write Echo program</li>
+                            <li>Interact using Serial Console</li>
+                        </ol>
+                    </section>
+
+                    <!-- NOTES pySerial
+
+                    Now that we can interact with the Arduino via serial console, let's do it more programmatically.
+                    Python has a great module for this called pySerial.
+
+                    (Who has it installed?)
+
+                    Use `python -m serial.tools.list_ports` to list the available serial ports. On OSX, the Arduino
+                    should be something like /dev/tty.usbmodem. On Windows, COM.
+
+                    <next>
+                    (Explain the structure of the python program)
+                    <demo it>
+
+                    -->
+                    <section>
+                        <h2>pySerial</h2>
+                        <p>List Ports</p>
+                        <pre><code class="java" data-trim>
+python -m serial.tools.list_ports
+
+$ python -m serial.tools.list_ports
+/dev/tty.usbmodemfd121
+1 port found
+                        </code></pre>
+
+                        <div class="fragment">
+                            <p>I/O</p>
+                            <pre><code class="python" data-trim>
+import serial
+
+#Connect
+ser = serial.Serial('/dev/tty.usbmodemfd121', 9600)
+
+#Write
+ser.write("This is a message.")
+ser.sendBreak()
+
+#Read
+c = serial.read()
+lines = serial.readlines()
+
+ser.close()
+                            </code></pre>
+                        </div>
+
+                    </section>
+
+                    <!-- NOTES
+                    Now, it's your turn. In a new sketch, write an echo program using the Serial code from the
+                    earlier slide. Then, use the python serial sender program to forward messages to the Arduino
+                    over serial. You should see the CLI messages echoed in the Arudino Serial Console.
+
+                    <lab 8.2>
+                    -->
+                    <section>
+                        <h2>Lab 8.2 - pySerial</h2>
+                        <ul>
+                            <li>Create an serial echo sketch</li>
+                            <li>Run the pySerial demo</li>
+                            <li>See messages appear in Arduino Serial Console</li>
+                        </ul>
+                    </section>
+
+                    <!-- NOTES
+                    Now, we'll use that with the game we already made.
+                    1. Load the Lab 8.3 Simon Says sketch.
+                    2. Adjust the LIGHT_TRIGGER_LEVEL constant for waving like you did previously.
+                    3. Run the pySerial demo and send it some game commands.
+
+                    <lab 8.3>
+
+                    -->
+                    <section>
+                        <h2>Lab 8.3 - Simon Says</h2>
+                        <ul>
+                            <li>Load the lab 8.3 Simon Says sketch</li>
+                            <li>Run the pySerial demo</li>
+                            <li>Send commands to the Simon game</li>
+                            <pre><code class="java" data-trim>
+WAVE IT
+PUSH IT
+PUSH IT
+TWIST IT
+END
+                            </code></pre>
+                        </ul>
+                    </section>
+
+                </section>
+
+
+                <!-- NOTES
+
+                What's next?
+
+                -Try reproducing some interesting projects from online, even if you won't use them, to gain experience.
+                -Get a solder breadboard and make your creation more permanent.
+                -Etch your own circuit boards using a laser printer and HCl
+                ⁃Look into programming AVR chips directly and do it for ~$1/ea.
+
+                -->
+
+                <section>
+                    <h2>What's Next?</h2>
+                    <ul>
+                        <li>Copy cool projects</li>
+                        <li>Prototyping --> Production</li>
+                        <li>Soldering</li>
+                        <li>Circuit board etching</li>
+                    </ul>
+
+                    <img src="images/etched.JPG" style="height:300px;"/>
+
+                </section>
+
+                <section>
+                    <h2>Resources</h2>
+
+                    <p><a href="http://www.arduino.cc/"/>http://www.arduino.cc/</a></p>
+                    <p>Getting Started with Arduino, Massimo Banzi</p>
+                    <p><a href="http://playground.arduino.cc/projects/arduinoUsers">http://playground.arduino.cc/projects/arduinoUsers</a></p>
+                    <p><a href="http://www.instructables.com/id/Arduino-Projects/"/>http://www.instructables.com/id/Arduino-Projects/</a></p>
+                </section>
+
+			</div>
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.min.js"></script>
+
+		<script>
+
+			// Full list of configuration options available here:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+				transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+
+				// Optional libraries used to extend on reveal.js
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+					{ src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
